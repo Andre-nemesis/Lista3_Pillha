@@ -1,44 +1,39 @@
+'''
+Escreva um programa que leia uma string contendo números e operações matemáticas (+, -, *, /) 
+e use uma pilha para calcular o resultado da expressão.
+'''
+
 from pilha import Pilha
 
 def calcular(valor):
     p_op = Pilha()
     p_num = Pilha()
-    p_space = Pilha()
     for caractere in valor:
         if caractere.isnumeric():
-            p_num.inserir(caractere)
-        #retirando o espaço em branco
-        elif caractere.isspace():
-            p_space.inserir(caractere)
+            p_num.inserir(int(caractere))
         #quardando as operações
-        else:
+        elif caractere in '+-*/' :
             p_op.inserir(caractere)
     
     while not p_op.is_empty():
-        if p_op.remover() == '+':
-            num2 = p_num.remover()
-            num1 = p_num.remover()
-            resultado = int(num1) + int(num2)
+        op = p_op.remover()
+        num2 = p_num.remover()
+        num1 = p_num.remover()
+        if op == '+':
+            resultado = num1 + num2
             p_num.inserir(resultado)
-        elif p_op.remover() == '-':
-            num2 = p_num.remover()
-            num1 = p_num.remover()
-            resultado = int(num1) - int(num2)
+        elif op == '-':
+            resultado = num2 - num1
             p_num.inserir(resultado)
-        elif p_op.remover() == '*':
-            num2 = p_num.remover()
-            num1 = p_num.remover()
-            resultado = int(num1) * int(num2)
+        if op == '*':
+            resultado = num1 * num2
             p_num.inserir(resultado)
-        elif p_op.remover() == '/':
-            num2 = p_num.remover()
-            num1 = p_num.remover()
-            resultado = int(num1) / int(num2)
+        if op == '/':
+            resultado = num1 / num2
             p_num.inserir(resultado)
 
-    return p_num
+    return p_num.topo()
 
 numero = input('Digite uma expressão matematica: ')
 res = calcular(numero)
-while not res.is_empty():
-    print(res.remover(),end=" ")
+print(res)
